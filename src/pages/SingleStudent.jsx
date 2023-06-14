@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { Component, useRef, useState } from "react";
 import { useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { getStudentById } from "../apis/student";
+import ReactToPrint from "react-to-print";
+
+class SingleStudentPrint extends Component {
+  render() {
+    return <div>{this.props.showStudentData()}</div>;
+  }
+}
 
 const SingleStudent = () => {
   const { id } = useParams();
@@ -59,6 +66,8 @@ const SingleStudent = () => {
     extra: "",
   });
 
+  const componentRef = useRef();
+
   const getStudent = async () => {
     const student = await getStudentById(id);
     setStudent(student);
@@ -70,7 +79,6 @@ const SingleStudent = () => {
 
   const showStudentData = () => (
     <>
-      <h3>Student</h3>
       <Table bordered striped hover>
         <tbody>
           {studentTableRows.map((s) => {
@@ -98,7 +106,15 @@ const SingleStudent = () => {
 
   return (
     <div div className="container mt-5">
-      {showStudentData()}
+      <ReactToPrint
+        trigger={() => <button>Print this out!</button>}
+        content={() => componentRef.current}
+        pageStyle={{ margin: 50 }}
+      />
+      <SingleStudentPrint
+        ref={componentRef}
+        showStudentData={showStudentData}
+      />
     </div>
   );
 };
