@@ -1,0 +1,6 @@
+@import url(https://fonts.googleapis.com/earlyaccess/notonaskharabic.css);
+
+.urduFont {
+  font-family: "Noto Naskh Arabic", serif;
+  direction: rtl;
+}
